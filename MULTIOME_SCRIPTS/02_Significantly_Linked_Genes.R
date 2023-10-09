@@ -9,11 +9,10 @@ library(readr)
 library(tgutil)
 library(tidyverse)
 library(ggpubr)
-source("~/onlybiohpc/pr3/OUR_DATA/utility_functions.R")
-source("~/onlybiohpc/pr5/utility_functions.R")
+source("utility_functions.R")
 
 # Read data
-pks_to_gns = read_rds('/home2/s422159/workdir/pr5/MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
+pks_to_gns = read_rds('MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
 pks_to_gns$FDR = p.adjust(pks_to_gns$pval, method = 'fdr')
 
 # FDR cutoff of 0.05 does not filter additional links in this dataset
@@ -21,7 +20,7 @@ pks_to_gns$peak2 = sub('-', ':', pks_to_gns$peak)
 pks_to_gns$gene = factor(pks_to_gns$gene)
 gns_bcg = pks_to_gns$gene %>% unique
 
-hvarsAll = read_rds('~/workdir/pr5/02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
+hvarsAll = read_rds('02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
 
 # All CREs
 cre_all = hvarsAll$CRE
@@ -71,7 +70,7 @@ for(i in 1:length(gnstotest)){
 }
 
 resdf = do.call(rbind, resL)
-saveRDS(resdf, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_Human.RDS')
+saveRDS(resdf, 'MULTIOME_FETAL/Linked_Gene_Stats_Human.RDS')
 
 
 ####
@@ -118,10 +117,7 @@ for(i in 1:length(gnstotest)){
 }
 
 resdf = do.call(rbind, resL)
-saveRDS(resdf, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_HC.RDS')
-
-
-
+saveRDS(resdf, 'MULTIOME_FETAL/Linked_Gene_Stats_HC.RDS')
 
 ####
 ## HCGo divergent CREs
@@ -167,9 +163,7 @@ for(i in 1:length(gnstotest)){
 }
 
 resdf = do.call(rbind, resL)
-saveRDS(resdf, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_HCGo.RDS')
-
-
+saveRDS(resdf, 'MULTIOME_FETAL/Linked_Gene_Stats_HCGo.RDS')
 
 ####
 ## Great_Ape divergent CREs
@@ -215,9 +209,7 @@ for(i in 1:length(gnstotest)){
 }
 
 resdf = do.call(rbind, resL)
-saveRDS(resdf, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_Great_Ape.RDS')
-
-
+saveRDS(resdf, 'MULTIOME_FETAL/Linked_Gene_Stats_Great_Ape.RDS')
 
 ####
 ## Ape divergent CREs
@@ -263,18 +255,18 @@ for(i in 1:length(gnstotest)){
 }
 
 resdf = do.call(rbind, resL)
-saveRDS(resdf, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_Ape.RDS')
+saveRDS(resdf, 'MULTIOME_FETAL/Linked_Gene_Stats_Ape.RDS')
 
 
 ####
 ## Read all results
 ####
 
-human_resdf = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_Human.RDS') %>% add_column(Divergence = 'Human')
-hc_resdf = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_HC.RDS') %>% add_column(Divergence = 'HC')
-hcgo_resdf = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_HCGo.RDS') %>% add_column(Divergence = 'HCGo')
-greatApe_resdf = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_Great_Ape.RDS') %>% add_column(Divergence = 'Great_Ape')
-ape_resdf = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Stats_Ape.RDS') %>% add_column(Divergence = 'Ape')
+human_resdf = read_rds('MULTIOME_FETAL/Linked_Gene_Stats_Human.RDS') %>% add_column(Divergence = 'Human')
+hc_resdf = read_rds('MULTIOME_FETAL/Linked_Gene_Stats_HC.RDS') %>% add_column(Divergence = 'HC')
+hcgo_resdf = read_rds('MULTIOME_FETAL/Linked_Gene_Stats_HCGo.RDS') %>% add_column(Divergence = 'HCGo')
+greatApe_resdf = read_rds('MULTIOME_FETAL/Linked_Gene_Stats_Great_Ape.RDS') %>% add_column(Divergence = 'Great_Ape')
+ape_resdf = read_rds('MULTIOME_FETAL/Linked_Gene_Stats_Ape.RDS') %>% add_column(Divergence = 'Ape')
 
 # Multiple testing correction
 human_resdf$FDR = p.adjust(human_resdf$pval, method = 'fdr')
@@ -312,16 +304,16 @@ ape_div = ape_resdf[ape_resdf$pval< 0.05 &
 all_res = do.call(rbind, list(human_resdf, hc_resdf, hcgo_resdf, greatApe_resdf, ape_resdf))
 all_div = do.call(rbind, list(human_div, hc_div, hcgo_div, gape_div, ape_div))
 
-write_rds(all_res, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_All.RDS')
-write_rds(all_div, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_Nominal.RDS')
+write_rds(all_res, 'MULTIOME_FETAL/Linked_Gene_Final_Results_All.RDS')
+write_rds(all_div, 'MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_Nominal.RDS')
 
 
 # Keep only significant ones after FDR correction.
 all_div = all_div[all_div$FDR < 0.05, ]
-write_rds(all_div, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
+write_rds(all_div, 'MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
 
 # Plot number of genes per category
-all_div = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
+all_div = read_rds('MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
 
 groups = unique(all_div[['Divergence']])
 vals = table(all_div[['Divergence']])[groups] %>% as.numeric
@@ -341,12 +333,11 @@ dev.off()
 
 
 # All genes tested for DEGs
-alldeg_res = readRDS('~/workdir/pr3/rnaseq/human_chimp_macaque/06_DEGs/PSEUDOBULK_DEGs_ALL.RDS')
+alldeg_res = readRDS('PSEUDOBULK_DEGs_ALL.RDS')
 all_gns_degres = alldeg_res$Gene %>% unique
 
 # All genes tested for peak-link
-seq_evo_bcg = read_rds('/home2/s422159/workdir/pr5/MULTIOME_FETAL/pr_gns.RDS') %>% unlist %>% as.character
-
+seq_evo_bcg = read_rds('pr_gns.RDS') %>% unlist %>% as.character
 
 ####
 ## HS-DEG ENRICHMENT
@@ -415,7 +406,7 @@ pdf('HSDEG_SequenceEvo_Enrichment_TABLE_FETAL.pdf')
 grid.table(toexport)
 dev.off()
 
-write_rds(toplot, '/home2/s422159/workdir/pr5/MULTIOME_FETAL/HSDEG_SequenceEvo_Enrichment.RDS')
+write_rds(toplot, 'MULTIOME_FETAL/HSDEG_SequenceEvo_Enrichment.RDS')
 
 
 
@@ -424,8 +415,8 @@ write_rds(toplot, '/home2/s422159/workdir/pr5/MULTIOME_FETAL/HSDEG_SequenceEvo_E
 ####
 
 # Add background number of CRE links for all genes
-all_res = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_All.RDS')
-all_div = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
+all_res = read_rds('MULTIOME_FETAL/Linked_Gene_Final_Results_All.RDS')
+all_div = read_rds('MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
 
 all_res$id = paste0(all_res$gene, '_', all_res$Divergence)
 all_div$id = paste0(all_div$gene, '_', all_div$Divergence)
@@ -444,11 +435,11 @@ toplot = rbind(toplot, tmp)
 toplot$id = paste0(toplot$gene, '_', toplot$Divergence)
 toplot = toplot[!(duplicated(toplot$id)),]
 
-write_rds(toplot, '~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_All_FORPLOTTING.RDS')
+write_rds(toplot, 'MULTIOME_FETAL/Linked_Gene_Final_Results_All_FORPLOTTING.RDS')
 
 
 # Plot selected genes
-toplot = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_All_FORPLOTTING.RDS')
+toplot = read_rds('MULTIOME_FETAL/Linked_Gene_Final_Results_All_FORPLOTTING.RDS')
 gns = c('TFEB')
 toplot_sub = toplot[toplot$gene %in% gns,]
 
@@ -470,8 +461,8 @@ dev.off()
 ## ADULT-FETAL RAG OVERLAP
 ####
 
-adult_all_div = read_rds('~/workdir/pr5/MULTIOME_ADULT/Linked_Gene_Final_Results_Sign_FDR.RDS')
-fetal_all_div = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
+adult_all_div = read_rds('MULTIOME_ADULT/Linked_Gene_Final_Results_Sign_FDR.RDS')
+fetal_all_div = read_rds('MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
 
 nodes = unique(adult_all_div$Divergence)
 
