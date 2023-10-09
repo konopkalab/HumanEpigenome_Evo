@@ -14,15 +14,15 @@ source("~/onlybiohpc/pr3/OUR_DATA/utility_functions.R")
 
 
 # Read adult dataset. Only fetal brain links will be displayed (no fragments)
-combinedSeurat = read_rds('/home2/s422159/workdir/pr5/MULTIOME_ADULT/PKS_TO_GNS/seurat_object_mypeaks_with_fragments.RDS')
+combinedSeurat = read_rds('MULTIOME_ADULT/PKS_TO_GNS/seurat_object_mypeaks_with_fragments.RDS')
 DefaultAssay(combinedSeurat) = 'ATAC'
 
 # Read links
-all_links = readRDS('/home2/s422159/workdir/pr5/MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
-all_div_links = readRDS('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
+all_links = readRDS('MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
+all_div_links = readRDS('MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
 
 # Load divergent CREs
-hvarsAll = read_rds('~/workdir/pr5/02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
+hvarsAll = read_rds('02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
 human_div = hvarsAll[hvarsAll$HumanSign == 'Sign', 'CRE'] %>% sub(':', '-', .)
 hc_div = hvarsAll[hvarsAll$HCSign == 'Sign', 'CRE'] %>% sub(':', '-', .)
 
@@ -50,36 +50,15 @@ CoveragePlot(
 )
 dev.off()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-allcountsLong = readRDS('~/workdir/pr5/02_GroupCREs/FETAL/FetalSubstitutions_Counted_BranchNormalized_LongFormat.RDS')
+# Plot substitutions per CRE
+allcountsLong = readRDS('02_GroupCREs/FETAL/FetalSubstitutions_Counted_BranchNormalized_LongFormat.RDS')
 colors = c('blue', 'lightblue', 'purple', 'pink', 'red')
 
 # Load divergent CREs
-hvarsAll = read_rds('~/workdir/pr5/02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
+hvarsAll = read_rds('02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
 human_div = hvarsAll[hvarsAll$HumanSign == 'Sign', 'CRE'] %>% sub(':', '-', .)
 
-all_links = readRDS('/home2/s422159/workdir/pr5/MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
+all_links = readRDS('MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
 all_links$is_div = ifelse(all_links$peak %in% human_div, 'Human_Divergent', 'NS')
 all_links$is_div = factor(all_links$is_div)
 
