@@ -11,8 +11,6 @@ library(tidyverse)
 library(ggpubr)
 source("~/onlybiohpc/pr3/OUR_DATA/utility_functions.R")
 
-
-
 # Read adult dataset. Only fetal brain links will be displayed (no fragments)
 combinedSeurat = read_rds('MULTIOME_ADULT/PKS_TO_GNS/seurat_object_mypeaks_with_fragments.RDS')
 DefaultAssay(combinedSeurat) = 'ATAC'
