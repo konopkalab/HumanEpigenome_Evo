@@ -7,19 +7,19 @@ library(Seurat)
 library(reshape2)
 library(readr)
 library(pheatmap)
-source('~/onlybiohpc/pr5/utility_functions.R')
+source('utility_functions.R')
 
 ####
 ## FETAL MICROGLIA RAGs GO
 ####
 
 # Load fetal cell type markers
-ctmarks = readRDS('~/workdir/pr5/CELLTYPE_MARKERS/FETAL/PseudoBulk_DARs_MAJOR_MARKERS.RDS')
+ctmarks = readRDS('CELLTYPE_MARKERS/FETAL/PseudoBulk_DARs_MAJOR_MARKERS.RDS')
 ctmarks = ctmarks[ctmarks$logFC < -1,]
 micMarks = ctmarks[ctmarks$CellType == 'Microglia',]
 
 # Load evolutionary groups
-evoGroups = readRDS('~/workdir/pr5/02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
+evoGroups = readRDS('02_GroupCREs/FETAL/FetalCREs_SignTested_SD_1_FC_ConsAdded.RDS')
 human_cres = evoGroups[evoGroups$HumanSign == 'Sign', 'CRE']
 hc_cres = evoGroups[evoGroups$HCSign == 'Sign', 'CRE']
 hcgo_cres = evoGroups[evoGroups$HCGoSign == 'Sign', 'CRE']
@@ -28,8 +28,8 @@ ape_cres = evoGroups[evoGroups$ApeSign == 'Sign', 'CRE']
 all_cres = Reduce(union, list(human_cres, hc_cres, hcgo_cres, gape_cres, ape_cres))
 
 # Load regulation accelerated genes
-all_rags = read_rds('~/workdir/pr5/MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
-pks_to_gns = read_rds('/home2/s422159/workdir/pr5/MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
+all_rags = read_rds('MULTIOME_FETAL/Linked_Gene_Final_Results_Sign_FDR.RDS')
+pks_to_gns = read_rds('MULTIOME_FETAL/PKS_TO_GNS/Trevino_LinkPeaksToGenes_FINAL.RDS')
 pks_to_gns$peak2 = sub('-', ':', pks_to_gns$peak)
 
 # Evolutionarily divergent fetal microglia markers
@@ -43,7 +43,7 @@ micLinkedRAGs = intersect(micLinkedGns, unique(all_rags$gene))
 
 # Run gene ontology enrichment
 rnadf = GOenrich(micLinkedRAGs, micLinkedGns, pCut = 1, qCut = 1, species = 'human')
-write_rds(rnadf, '~/workdir/pr5/MULTIOME_FETAL/GO_Enrich_MicrogliaLinkedRAGs.RDS')
+write_rds(rnadf, 'MULTIOME_FETAL/GO_Enrich_MicrogliaLinkedRAGs.RDS')
 
 # Extract significant results
 rnadf_sign = rnadf[rnadf$p.adjust < 0.05, ]
@@ -82,7 +82,7 @@ ggscatter(toplot, y = 'gene', x = 'node', size = 'Presence') +
 dev.off()
 
 
-#seurObj = read_rds('~/workdir/pr5/RNASEQ_FETAL/seurObj_clustered.RDS')
+#seurObj = read_rds('RNASEQ_FETAL/seurObj_clustered.RDS')
 #seurObj = NormalizeData(seurObj)
 #seurObj = subset(seurObj, subset = Major == 'Others', invert = T)
 #DotPlot(seurObj, features = c(gogns), group.by = 'Major')
@@ -92,7 +92,7 @@ dev.off()
 ## PLOT IN DEVELOPING MICROGLIA DATASET (POPOVA 2021)
 ####
 
-seurObj = read_rds('/home2/s422159/workdir/pr5/EXTERNAL_DATASETS/POPOVA_2021/biccn_cb.rds')
+seurObj = read_rds('EXTERNAL_DATASETS/POPOVA_2021/biccn_cb.rds')
 seurObj = NormalizeData(seurObj)
 
 human_mic_rags = c('DOCK8', 'PLEC', 'CCL3', 'CCL4', 'CCL3L3', 'ADAM8', 'CRK')
@@ -134,12 +134,12 @@ dev.off()
 ####
 
 # Load adult cell type markers
-ctmarks = readRDS('~/workdir/pr5/CELLTYPE_MARKERS/ADULT/PseudoBulk_DARs_MAJOR_MARKERS.RDS')
+ctmarks = readRDS('CELLTYPE_MARKERS/ADULT/PseudoBulk_DARs_MAJOR_MARKERS.RDS')
 ctmarks = ctmarks[ctmarks$logFC < -1,]
 micMarks = ctmarks[ctmarks$CellType == 'Microglia',]
 
 # Load evolutionary groups
-evoGroups = readRDS('~/workdir/pr5/02_GroupCREs/ADULT/AdultCREs_SignTested_SD_1_FC_ConsAdded.RDS')
+evoGroups = readRDS('02_GroupCREs/ADULT/AdultCREs_SignTested_SD_1_FC_ConsAdded.RDS')
 human_cres = evoGroups[evoGroups$HumanSign == 'Sign', 'CRE']
 hc_cres = evoGroups[evoGroups$HCSign == 'Sign', 'CRE']
 hcgo_cres = evoGroups[evoGroups$HCGoSign == 'Sign', 'CRE']
@@ -148,8 +148,8 @@ ape_cres = evoGroups[evoGroups$ApeSign == 'Sign', 'CRE']
 all_cres = Reduce(union, list(human_cres, hc_cres, hcgo_cres, gape_cres, ape_cres))
 
 # Load regulation accelerated genes
-all_rags = read_rds('~/workdir/pr5/MULTIOME_ADULT/Linked_Gene_Final_Results_Sign_FDR.RDS')
-pks_to_gns = read_rds('/home2/s422159/workdir/pr5/MULTIOME_ADULT/PKS_TO_GNS/Ma_LinkPeaksToGenes_FINAL.RDS')
+all_rags = read_rds('MULTIOME_ADULT/Linked_Gene_Final_Results_Sign_FDR.RDS')
+pks_to_gns = read_rds('MULTIOME_ADULT/PKS_TO_GNS/Ma_LinkPeaksToGenes_FINAL.RDS')
 pks_to_gns$peak2 = sub('-', ':', pks_to_gns$peak)
 
 # Evolutionarily divergent adult microglia markers
