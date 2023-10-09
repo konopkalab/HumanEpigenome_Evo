@@ -6,7 +6,7 @@ cd MULTIOME_FETAL
 
 for i in {1..178}
 do
-Rscript MULTIOME_FETAL/LinkPeaksToGenes.R 'MULTIOME_FETAL/seurObj.RDS' \
+Rscript MULTIOME_SCRIPTS/LinkPeaksToGenes.R 'MULTIOME_FETAL/seurObj.RDS' \
 	'pr_gns.RDS' \
 	$i
 done
