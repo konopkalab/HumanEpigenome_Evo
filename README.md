@@ -17,7 +17,6 @@ Multiz alignment files: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/multiz30
 Other files (please download to IN_DATA folder): https://cloud.biohpc.swmed.edu/index.php/s/Y28GwDaBGW2XGf8
 
 <br>
-<br>
 
 ### ***Package Requirements***
 
