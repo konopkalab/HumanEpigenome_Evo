@@ -13,6 +13,7 @@ Due to file size limit in github, some of the input files are too large to uploa
 **Download Links:**
 
 Multiz alignment files: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/multiz30way/maf/
+
 Other files (please download to IN_DATA folder): https://cloud.biohpc.swmed.edu/index.php/s/Y28GwDaBGW2XGf8
 
 <br>
